@@ -14,7 +14,7 @@
 #define SERVER_RTP_PORT 55532
 #define SERVER_RTCP_PORT 55533
 
-#define H264_FILE_NAME "../data/test.h264"
+#define H264_FILE_NAME "/home/llz/CPP/data/test.h264"
 #define BUFFER_MAX_SIZE (1024 * 1024)
 
 static int create_tcp_socket() {
@@ -36,7 +36,7 @@ static int create_udp_socket() {
     if (sockfd < 0) {
         return -1;
     }
-    
+    // 设置端口复用
     setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
     
     return sockfd;
@@ -128,10 +128,8 @@ static int get_frame_from_H264_file(FILE* fp, char* frame, int size) {
     int read_size, frame_size;
     char* next_start_code;
     
-    if (fp < 0) {
-        return -1;
-    }
-    
+    // fread(指针保存读取的数据，每块数据的字节数，需要读取的块数，文件指针)
+    // 返回读取的块数
     read_size = fread(frame, 1, size, fp);
     
     if (!start_code_3(frame) && !start_code_4(frame)) {
@@ -238,8 +236,7 @@ static int rtp_send_H264_frame(int server_rtp_sockfd, const char* ip,
             rtp_packet->payload[1] = nalu_first_byte & 0x1F;
             rtp_packet->payload[1] |= 0x40;
             
-            memcpy(rtp_packet->payload + 2,
-                   frame + pos,
+            memcpy(rtp_packet->payload + 2, frame + pos,
                    remain_packet_size + 2);
             ret = rtp_send_packet_over_udp(server_rtp_sockfd, ip, port,
                                            rtp_packet, remain_packet_size + 2);
@@ -341,7 +338,8 @@ static void do_client(int clientfd, const char* client_ip, int client_port) {
         while (line) {
             if (strstr(line, "OPTIONS") != NULL ||
                 strstr(line, "DESCRIBE") != NULL ||
-                strstr(line, "SETUP") != NULL || strstr(line, "PLAY") != NULL) {
+                strstr(line, "SETUP") != NULL ||
+                strstr(line, "PLAY") != NULL) {
                 if (sscanf(line, "%s %s %s\r\n", method, url, version) != 3) {
                     //error
                 }
@@ -354,11 +352,10 @@ static void do_client(int clientfd, const char* client_ip, int client_port) {
             else if (strncmp(line, "Transport:", strlen("Transport:")) >= 0) {
                 // Transport: RTP/AVP/UDP;unicast;client_port=13358-13359
                 // Transport: RTP/AVP;unicast;client_port=13358-13359
-                if (sscanf(
-                        line,
-                        "Transport: RTP/AVP/UDP;unicast;client_port=%d-%d\r\n",
-                        &client_rtp_port,
-                        &client_rtcp_port) != 2) {
+                if (sscanf(line,
+                           "Transport: RTP/AVP/UDP;unicast;client_port=%d-%d\r\n",
+                           &client_rtp_port,
+                           &client_rtcp_port) != 2) {
                     // error
                     printf("parse Transport error\n");
                 }
@@ -444,7 +441,7 @@ static void do_client(int clientfd, const char* client_ip, int client_port) {
                                     client_rtp_port, rtp_packet,
                                     frame + start_code, frame_size);
                 
-                sleep(40);
+                usleep(40000);
             }
             free(frame);
             free(rtp_packet);

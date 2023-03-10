@@ -55,6 +55,8 @@ int rtp_send_packet_over_udp(int server_rtp_sockfd, const char* ip,
     addr.sin_addr.s_addr = inet_addr(ip);
     addr.sin_port = htons(port);
     
+    // 转换结构体内的网络字节序，网络字节序是针对超过一个字节的数据而言的读取顺序，对于
+    // 不超过一个字节的内容无需转换字节序
     rtp_packet->rtp_header.seq = htons(rtp_packet->rtp_header.seq);
     rtp_packet->rtp_header.timestamp = htonl(rtp_packet->rtp_header.timestamp);
     rtp_packet->rtp_header.ssrc = htonl(rtp_packet->rtp_header.ssrc);

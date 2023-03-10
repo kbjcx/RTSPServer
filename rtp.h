@@ -28,16 +28,17 @@
  */
 
 struct RtpHeader {
-    // byte 0
-    uint8_t csrc_len: 4; // CSRC计数器, 占4位, 指示CSRC标识符的个数
+    // byte 0 位域分配位数是从低位到高位
+    // version padding extension csrc_len
+    uint8_t csrc_len: 4; // CSRC计数器, 占4位, 指示CSRC标识符的个数，低位数据
     uint8_t extension: 1; // 占1位, if X = 1, 则有扩展头部
     uint8_t padding: 1; // 填充标志，在该报文的尾部添加一个或多个额外的八位组，他们不是有效载荷的一部分
-    uint8_t version: 2; // RTP协议的版本号
+    uint8_t version: 2; // RTP协议的版本号，高位数据
     // byte 1
     uint8_t payload_type: 7; // 有效载荷类型
     uint8_t marker: 1; // 标记位, 对于不同的有效载荷有不同的含义
     // byte 2-3
-    uint16_t seq; // 报文序列号
+    uint16_t seq; // 报文序列号，超过1字节需要在发送时转为大端序
     // byte 4 - 7
     uint32_t timestamp; // 时间戳
     // byte 8 - 11
