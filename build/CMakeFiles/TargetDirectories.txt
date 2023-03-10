@@ -1,3 +1,0 @@
-/home/llz/CPP/tmp/tmp.qETx2QyDBq/build/CMakeFiles/rebuild_cache.dir
-/home/llz/CPP/tmp/tmp.qETx2QyDBq/build/CMakeFiles/edit_cache.dir
-/home/llz/CPP/tmp/tmp.qETx2QyDBq/build/CMakeFiles/server.dir

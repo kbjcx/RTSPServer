@@ -29,8 +29,8 @@ AllowShortBlocksOnASingleLine: Never
 AllowShortIfStatementsOnASingleLine: false
 AlwaysBreakBeforeMultilineStrings: true
 AlwaysBreakTemplateDeclarations: Yes
-BinPackParameters: false
-BinPackArguments: false
+BinPackArguments: true
+BinPackParameters: true
 BraceWrapping:
     BeforeElse: true
     BeforeCatch: true
