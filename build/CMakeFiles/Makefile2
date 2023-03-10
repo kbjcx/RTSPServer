@@ -44,10 +44,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/llz/CPP/RTSP_Server
+CMAKE_SOURCE_DIR = /home/llz/CPP/tmp/tmp.qETx2QyDBq
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/llz/CPP/RTSP_Server/build
+CMAKE_BINARY_DIR = /home/llz/CPP/tmp/tmp.qETx2QyDBq/build
 
 #=============================================================================
 # Directory level rules for the build root directory
@@ -74,14 +74,14 @@ clean: CMakeFiles/server.dir/clean
 CMakeFiles/server.dir/all:
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/depend
 	$(MAKE) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/llz/CPP/RTSP_Server/build/CMakeFiles --progress-num=1,2 "Built target server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/llz/CPP/tmp/tmp.qETx2QyDBq/build/CMakeFiles --progress-num=1,2 "Built target server"
 .PHONY : CMakeFiles/server.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/server.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/llz/CPP/RTSP_Server/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/llz/CPP/tmp/tmp.qETx2QyDBq/build/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/server.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/llz/CPP/RTSP_Server/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/llz/CPP/tmp/tmp.qETx2QyDBq/build/CMakeFiles 0
 .PHONY : CMakeFiles/server.dir/rule
 
 # Convenience name for target.

@@ -23,14 +23,12 @@ SpacesInCStyleCastParentheses: false
 SpacesInContainerLiterals: false
 SpacesInParentheses: false
 SpacesInSquareBrackets: false
-AlignAfterOpenBracket: Align
 AlignOperands: true
 ContinuationIndentWidth: 4
-AllowShortBlocksOnASingleLine: true
-AllowShortFunctionsOnASingleLine: None
+AllowShortBlocksOnASingleLine: Never
 AllowShortIfStatementsOnASingleLine: false
 AlwaysBreakBeforeMultilineStrings: true
-AlwaysBreakTemplateDeclarations: true
+AlwaysBreakTemplateDeclarations: Yes
 BinPackParameters: false
 BinPackArguments: false
 BraceWrapping:
@@ -38,14 +36,12 @@ BraceWrapping:
     BeforeCatch: true
     IndentBraces: false
     AfterClass: false
-    AfterControlStatement: false
     AfterEnum: false
     AfterFunction: false
     AfterNamespace: false
     AfterObjCDeclaration: false
     AfterStruct: false
     AfterUnion: false
-NamespaceIndentation: All
 PointerAlignment: Left
 IndentWidth: 4
 TabWidth: 4
