@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/llz/CPP/RTSP_Server/build",
+  "command": "/usr/bin/g++      -o CMakeFiles/server.dir/main.cpp.o -c /home/llz/CPP/RTSP_Server/main.cpp",
+  "file": "/home/llz/CPP/RTSP_Server/main.cpp"
+}
+]
