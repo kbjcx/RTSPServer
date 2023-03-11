@@ -131,13 +131,16 @@ struct AdtsHeader {
     uint8_t id; // 1bit 0表示MPEG-4，1表示MPEG-2
     uint8_t layer; // 2bit 必须为0
     uint8_t protection_absent; // 1bit 1表示没有CRC 0表示有CRC
-    uint8_t profile; // 1bit AAC级别（MPEG-2定义了3中profile
+    uint8_t profile; // 2bit AAC级别（MPEG-2定义了3中profile
                      // MPEG-4中定义了6种profile）
     uint8_t sampling_frequency_index; // 4bit 采样率
     uint8_t private_bit; // 1bit 编码时设置为0，解码时忽略
     uint8_t channel_cfg; // 3bit 声道数量
     uint8_t original_copy; // 1bit 编码时设置为0，解码时忽略
     uint8_t home; // 1bit 编码时设置为0，解码时忽略
+    
+    uint8_t copyright_identification_bit; // 1bit 编码时设置为0，解码时忽略
+    uint8_t copyright_identification_start; //
     unsigned int aac_frame_length; // 13bit 一个ADTS帧的长度包含ADTS头和AAC原始流
     unsigned int adts_buffer_fullness; // 11bit 缓冲区充满度, 0x7FF说明是码率可变
     // 的码流，不需要此字段，CBR可能需要此字段，不同编码器的使用情况不同。
@@ -155,6 +158,40 @@ static int parse_adts_header(uint8_t* in, struct AdtsHeader* res) {
     bzero(res, sizeof(*res));
     if (in[0] == 0xFF && (in[1] & 0xF0) == 0xF0) {
         // 符合同步字
-        res->id = ()
+        res->id = ((uint8_t)in[1] & 0x08) >> 3; // 获取第十三位的bit值
+        res->layer = ((uint8_t)in[1] & 0x06) >> 1; // 获取第14、15位bit值
+        res->protection_absent = ((uint8_t)in[1] & 0x01);
+        res->profile = ((uint8_t)in[2] & 0xc0) >> 6;
+        res->sampling_frequency_index = ((uint8_t)in[2] & 0x3c) >> 2;
+        res->private_bit = ((uint8_t)in[2] & 0x02) >> 1;
+        res->channel_cfg = ((uint8_t)in[2] & 0x01) << 2 |
+                           ((uint8_t)in[3] & 0xc0) >> 6;
+        res->original_copy = ((uint8_t)in[3] & 0x20) >> 5;
+        res->home = ((uint8_t)in[3] & 0x10) >> 4;
+        res->copyright_identification_bit = ((uint8_t)in[3] & 0x08) >> 3;
+        res->copyright_identification_start = ((uint8_t)in[3] & 0x04) >> 2;
+        res->aac_frame_length = ((uint8_t)in[3] & 0x03) << 11 |
+                                ((uint8_t)in[4] & 0xFF) << 3 |
+                                ((uint8_t)in[4] & 0xE0) >> 5;
+        res->adts_buffer_fullness = ((uint8_t)in[4] & 0x1F) << 6 |
+                                    ((uint8_t)in[5] & 0xFc) >> 2;
+        res->number_of_raw_data_blocks_in_frame = ((uint8_t)in[5] & 0x3);
+        
+        return 0;
     }
+    else {
+        printf("failed to parse adts header\n");
+        return -1;
+    }
+}
+
+static int rtp_send_aac_frame(int socket, const char* ip, int16_t port,
+                              struct RtpPacket* rtp_packet, uint8_t* frame,
+                              uint32_t frame_size) {
+    int ret;
+    
+    rtp_packet->payload[0] = 0x00;
+    rtp_packet->payload[1] = 0x10;
+    rtp_packet->payload[2] = (frame_size & 0x1FE0) >> 5; // 高八位
+    rtp_packet->payload[3] = (frame_size & 0x1f); // 低五位
 }
