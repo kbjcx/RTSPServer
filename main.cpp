@@ -318,12 +318,12 @@ static void do_client(int clientfd, const char* client_ip, int client_port) {
     
     int server_rtp_sockfd = -1, server_rtcp_sockfd = -1;
     int client_rtp_port, client_rtcp_port;
-    char* read_buffer = (char*) malloc(10000);
-    char* write_buffer = (char*) malloc(10000);
+    char* read_buffer = (char*) malloc(BUFFER_MAX_SIZE);
+    char* write_buffer = (char*) malloc(BUFFER_MAX_SIZE);
     
     while (true) {
         int recv_len;
-        recv_len = recv(clientfd, read_buffer, 2000, 0);
+        recv_len = recv(clientfd, read_buffer, BUFFER_MAX_SIZE, 0);
         if (recv_len <= 0) {
             break;
         }
